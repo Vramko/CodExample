@@ -1,0 +1,209 @@
+#Просто пример  кода, написанного за несколько часов для домашнего задания по программированию в начале учебного цикла
+
+#Change
+TypesCoins={'c1':1,'c2':2,'c3':5,'c4':10}
+AmountCoins = {'leftcoin1':400,'leftcoin2':400,'leftcoin3':400,'leftcoin4':400}
+
+#EnterMoney
+TypesBanknot = ['Error',50,100,200,500]
+AmountDeposited = 0
+
+#Asorrtment
+NaP = {'Mars':50, 'Corny BIG':55, 'Snickers':45, 'MarVickTwix':45, 'Bounty':43, 'KitKat':49, 'Coca Cola':71, 'Pepsi':73, 'Schweppes':90, 'Mirinda':68, 'Sprite':67, 'Nestle Classic':64, 'Alpen Gold':56,'Milka':45,'Bombbar':54}
+NaRQ= {'Mars':15, 'Corny BIG':7, 'Snickers':13, 'MarVickTwix':7, 'Bounty':4, 'KitKat':6, 'Coca Cola':3, 'Pepsi':8, 'Schweppes':4, 'Mirinda':3, 'Sprite':10, 'Nestle Classic':6, 'Alpen Gold':12,'Milka':12,'Bombbar':4}
+Number={}
+SelectedItem1 = []
+SelectedItem2 = 0
+
+banktot={'t1':0,'t2':0,'t3':0,'t4':0}
+
+def entmon():
+
+    vvod = int(input())
+    
+    for i in range (1,5):
+            if vvod == TypesBanknot[i]:
+                global AmountDeposited
+                AmountDeposited = AmountDeposited + TypesBanknot[i]
+    x = 0
+    for i in range (1,5):
+        if vvod not in TypesBanknot:
+            x = x + 1
+    if x != 0:
+        print('Error, banknote is not supported')
+
+    if vvod == TypesBanknot[1]:
+        banktot['t1'] = banktot['t1'] + 1
+    if vvod == TypesBanknot[2]:
+        banktot['t2'] = banktot['t2'] + 1
+    if vvod == TypesBanknot[3]:
+        banktot['t3'] = banktot['t3'] + 1
+    if vvod == TypesBanknot[4]:
+        banktot['t4'] = banktot['t4'] + 1
+    print('AmountDeposited = ',AmountDeposited)
+
+    pm()
+
+
+def asor(): # вывод всех товаров, которые есть в наличии
+    Number={}
+    num = 0
+    for i in NaRQ:
+        if NaRQ[i] >= 1:
+            num = num + 1
+            N1 = {i:num}
+            Number.update(N1)      
+            print(num,'. ',i,';',' price = ',NaP[i],'; left: ',NaRQ[i],sep='')
+    print('')
+    pm()
+
+
+def sp():# вывод товаров,которые есть в налии, и на которые у пользователя хватает введенных средств 
+    Number={}
+    global TChange
+    global AmountDeposited
+    global SelectedItem2
+    num = 0
+    if AmountDeposited  <= 0.01:
+        print('Enter more banknotes')
+        pm()
+    else:
+        for i in NaRQ:
+            if NaRQ[i] >= 1 and NaP[i] <= AmountDeposited :
+                num = num + 1
+                N1 = {i:num}
+                Number.update(N1)      
+                print(num,'. ',i,';',' price = ',NaP[i],'; left: ',NaRQ[i],sep='')
+        
+        Choise = int(input())
+        LKEYS=list(Number.keys())
+        print(LKEYS[Choise - 1])
+        SelectedItem1 = LKEYS[Choise - 1]
+        NaRQ[LKEYS[Choise - 1]]= NaRQ[LKEYS[Choise - 1]] - 1
+        print(NaRQ[LKEYS[Choise - 1]],'left')
+    
+        SelectedItem2 = NaP[SelectedItem1]
+        TChange = AmountDeposited - SelectedItem2
+        AmountDeposited = 0.00000000001
+        print(TChange)
+        print('')
+        pm()
+
+
+def change():
+    global Choise
+    global SelectedItem2
+    global AmountDeposited
+    global TChange
+    if SelectedItem2 == 0:
+        TChange = AmountDeposited
+    
+    if AmountDeposited == 0 and TChange != 0:
+        TChange = 0
+    if AmountDeposited == 0:
+        TChange = 0
+    
+    
+    Changet4 = (TChange // TypesCoins['c4'])
+    Changet3 = (TChange - Changet4*TypesCoins['c4']) // TypesCoins['c3']
+    Changet2 = ((TChange - Changet4*TypesCoins['c4']) - (Changet3*TypesCoins['c3'])) // TypesCoins['c2']
+    Changet1 = (((TChange - Changet4*TypesCoins['c4']) - (Changet3*TypesCoins['c3'])) - (Changet2*TypesCoins['c2'])) // TypesCoins['c1']
+    if Changet1 < 0 or Changet2 < 0 or Changet3 < 0 or Changet4 < 0:
+        print('Error')
+    else:
+        print('Take the change')
+        print(Changet4,'coins of',TypesCoins['c4'], 'rubles')
+        print(Changet3,'coins of',TypesCoins['c3'], 'rubles')
+        print(Changet2,'coins of',TypesCoins['c2'], 'rubles')
+        print(Changet1,'coins of',TypesCoins['c1'], 'rubles')
+
+    LCOINS=list(AmountCoins.keys())
+    Changes=[Changet1,Changet2,Changet3,Changet4]
+    for n in range(0,4):
+        AmountCoins[LCOINS[n]]= AmountCoins[LCOINS[n]] - Changes[n]
+    SelectedItem1=[]
+    SelectedItem2=0
+    AmountDeposited=0
+    TChange=0
+    Changet4=0
+    Changet3=0
+    Changet2=0
+    Changet1=0
+    pm()
+
+
+def secret():
+    print('1. Set the remaining quantity of all products to maximum')
+    print('2. Set the remaining amount of each coin denomination to maximum ')
+    print('3. Print the number of banknotes in the cash accepting module and reset their counters')
+    print('4. Go back to menu')
+    chossek()
+
+
+def chossek():
+    global banktot
+    global AmountCoins
+    global NaRQ
+    com = input()
+    if com == '1':
+        print(NaRQ)
+        NaRQ = {'Mars':15, 'Corny BIG': 7, 'Snickers':13, 'MarVickTwix':7, 'Bounty':4, 'KitKat':6, 'Coca Cola':3, 'Pepsi':8, 'Schweppes':4, 'Mirinda':3, 'Sprite':10, 'Nestle Classic':6, 'Alpen Gold':12,'Milka':12,'Bombbar':4}
+        print(NaRQ)
+        pm()
+    if com == '2':
+        AmountCoins = {'leftcoin1':400,'leftcoin2':400,'leftcoin3':400,'leftcoin4':400}
+        pm()
+    if com == '3':
+        print(banktot)
+        banktot = {'t1':0,'t2':0,'t3':0,'t4':0}
+        pm()
+    
+    if com == '4':
+        pm()
+    else:
+        print('Error')
+        pm()
+
+
+
+
+
+
+TotRQ=0# кол-во товаров для проверки 
+for i in NaRQ.values():
+    TotRQ=TotRQ + i
+
+TotAC=0
+for i in AmountCoins.values():
+    TotAC=TotAC + i
+
+def pm():
+    if TotRQ != 0  and TotAC != 0: # проверка на условие, не закончились ли сдача или товары
+        print('1.Insert a banknote')
+        print('2.Show available products')
+        print('3.Select a product')
+        print('4.Get the change')
+        choosemod()
+    else:
+        print('Error')
+
+
+def choosemod(): # выбор в меню
+    Command = input()
+    if Command == '1':
+        entmon()
+    if Command == '2':
+        asor()
+    if Command == '3':
+        sp()
+    if Command == '4':
+        change()
+    if Command == 'srvop17':
+        secret()
+    else:
+        print('Error')
+
+pm()
+
+
+
